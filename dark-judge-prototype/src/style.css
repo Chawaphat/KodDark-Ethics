@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #app {
+  height: 100%;
+}
+
+body {
+  @apply bg-judge-bg text-slate-100 font-sans antialiased;
+}
+
+.hotspot {
+  @apply cursor-pointer transition-all duration-150 outline-offset-2;
+}
+
+.hotspot:hover {
+  @apply ring-2 ring-judge-accent2/70 rounded;
+}
+
+.hotspot-found {
+  @apply ring-2 ring-judge-accent2 rounded;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #333744;
+  border-radius: 4px;
+}
