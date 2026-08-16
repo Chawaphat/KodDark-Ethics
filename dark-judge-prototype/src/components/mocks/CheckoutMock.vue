@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import Hotspot from '../Hotspot.vue'
+import Icon from '../Icon.vue'
 
 const props = defineProps({
   found: { type: Array, default: () => [] },
@@ -27,13 +28,17 @@ const total = computed(() => {
     <!-- fake storefront header -->
     <div class="bg-slate-900 text-white px-5 py-3 flex items-center justify-between">
       <span class="font-bold tracking-tight">NOVA<span class="text-judge-accent2">KICKS</span></span>
-      <span class="text-xs text-slate-300">🔒 Secure Checkout</span>
+      <span class="text-xs text-slate-300 flex items-center gap-1">
+        <Icon name="lock" :size="12" />Secure Checkout
+      </span>
     </div>
 
     <div class="p-5 sm:p-6 space-y-5">
       <!-- product -->
       <div class="flex gap-4 items-center">
-        <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center text-2xl">👟</div>
+        <div class="w-16 h-16 rounded-xl bg-slate-200 flex items-center justify-center text-slate-600">
+          <Icon name="shoe" :size="28" />
+        </div>
         <div class="flex-1">
           <p class="font-semibold">AeroRun Sneakers — Limited Edition</p>
           <p class="text-sm text-slate-500">Size 9 · Midnight Blue</p>
@@ -44,7 +49,7 @@ const total = computed(() => {
       <!-- fake free shipping banner -->
       <Hotspot as="div" :found="is('fake-free-shipping')" @trigger="emit('found', 'fake-free-shipping')">
         <div class="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2.5 flex items-center gap-2">
-          <span class="text-emerald-600 text-lg">🚚</span>
+          <span class="text-emerald-600"><Icon name="truck" :size="18" /></span>
           <p class="text-sm font-semibold text-emerald-700">FREE SHIPPING on this order!</p>
         </div>
       </Hotspot>
@@ -64,7 +69,7 @@ const total = computed(() => {
       <!-- step 1: continue button -->
       <button
         v-if="step === 1"
-        class="w-full rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 transition"
+        class="press w-full rounded-xl bg-slate-900 text-white font-semibold py-3"
         @click="step = 2"
       >
         Continue to Payment →
@@ -72,7 +77,7 @@ const total = computed(() => {
 
       <!-- step 2: fees revealed -->
       <template v-else>
-        <div class="rounded-xl border border-slate-200 divide-y">
+        <div class="rounded-xl border border-slate-200 divide-y animate-slide-down">
           <div class="flex justify-between px-4 py-2 text-sm text-slate-600">
             <span>Subtotal</span><span>${{ (base + addon).toFixed(2) }}</span>
           </div>
@@ -90,7 +95,7 @@ const total = computed(() => {
         </div>
 
         <div class="flex flex-col items-center gap-2 pt-1">
-          <button class="w-full rounded-xl bg-judge-accent hover:opacity-90 text-white font-bold py-3 shadow-md transition">
+          <button class="press w-full rounded-xl bg-judge-accent text-white font-bold py-3">
             Pay ${{ total }} Now
           </button>
           <Hotspot as="span" :found="is('tiny-decline-link')" @trigger="emit('found', 'tiny-decline-link')">

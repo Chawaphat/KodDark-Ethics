@@ -4,16 +4,17 @@ import { RouterLink } from 'vue-router'
 import { scenarios, categoryMeta } from '../data/scenarios'
 import { useEthicsStore } from '../store/ethics'
 import ScoreBar from '../components/ScoreBar.vue'
+import Icon from '../components/Icon.vue'
 
 const store = useEthicsStore()
 
 const overall = computed(() => store.overallScore)
 
 function verdict(score) {
-  if (score >= 85) return { label: 'Ethical Design Advocate', emoji: '🏆' }
-  if (score >= 60) return { label: 'Sharp-Eyed Investigator', emoji: '🕵️' }
-  if (score >= 30) return { label: 'Still Getting Tricked', emoji: '🙃' }
-  return { label: 'Dark Pattern Rookie', emoji: '🌱' }
+  if (score >= 85) return { label: 'Ethical Design Advocate', icon: 'trophy' }
+  if (score >= 60) return { label: 'Sharp-Eyed Investigator', icon: 'search' }
+  if (score >= 30) return { label: 'Still Getting Tricked', icon: 'meh' }
+  return { label: 'Dark Pattern Rookie', icon: 'sprout' }
 }
 </script>
 
@@ -25,10 +26,13 @@ function verdict(score) {
     </p>
 
     <div class="grid md:grid-cols-3 gap-5 mb-8">
-      <div class="md:col-span-1 bg-gradient-to-br from-judge-accent/20 to-judge-panel border border-judge-accent/30 rounded-2xl p-6 flex flex-col items-center justify-center text-center">
+      <div class="md:col-span-1 bg-judge-panel border border-white/10 rounded-2xl p-6 flex flex-col items-center justify-center text-center">
         <p class="text-xs uppercase tracking-widest text-slate-400 mb-1">Overall Ethics Score</p>
         <p class="text-5xl font-extrabold">{{ overall }}</p>
-        <p class="text-sm text-slate-400 mt-2">{{ verdict(overall).emoji }} {{ verdict(overall).label }}</p>
+        <p class="text-sm text-slate-400 mt-2 flex items-center justify-center gap-1.5">
+          <Icon :name="verdict(overall).icon" :size="16" />
+          <span>{{ verdict(overall).label }}</span>
+        </p>
       </div>
       <div class="md:col-span-2 bg-judge-panel border border-white/10 rounded-2xl p-6 space-y-5 flex flex-col justify-center">
         <ScoreBar
@@ -72,7 +76,7 @@ function verdict(score) {
         v-for="s in scenarios"
         :key="s.id"
         :to="`/scenario/${s.id}`"
-        class="flex items-center justify-between gap-4 bg-judge-panel border border-white/10 hover:border-judge-accent/40 rounded-xl p-4 transition"
+        class="press flex items-center justify-between gap-4 bg-judge-panel border border-white/10 rounded-xl p-4"
       >
         <div>
           <p class="font-semibold">{{ s.title }}</p>
@@ -81,17 +85,18 @@ function verdict(score) {
         <div class="text-right shrink-0">
           <p class="text-sm font-semibold">{{ store.scenarioFoundCount(s.id) }}/{{ s.totalHotspots }} found</p>
           <p
-            class="text-xs"
+            class="text-xs flex items-center justify-end gap-1"
             :class="store.progress[s.id].completed ? 'text-judge-accent2' : 'text-slate-500'"
           >
-            {{ store.progress[s.id].completed ? '✓ Completed' : 'In progress' }}
+            <Icon v-if="store.progress[s.id].completed" name="check-square" :size="12" />
+            <span>{{ store.progress[s.id].completed ? 'Completed' : 'In progress' }}</span>
           </p>
         </div>
       </RouterLink>
     </div>
 
     <div v-if="store.totalFound === 0" class="mt-8 text-center text-sm text-slate-500">
-      No data yet — <RouterLink to="/scenarios" class="text-judge-accent hover:underline">play a scenario</RouterLink> to populate your dashboard.
+      No data yet — <RouterLink to="/scenarios" class="text-judge-accent underline">play a scenario</RouterLink> to populate your dashboard.
     </div>
   </section>
 </template>

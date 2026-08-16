@@ -13,15 +13,14 @@ body {
 }
 
 .hotspot {
-  @apply cursor-pointer transition-all duration-150 outline-offset-2;
+  @apply cursor-pointer outline-offset-2 transition-transform duration-150;
 }
-
-.hotspot:hover {
-  @apply ring-2 ring-judge-accent2/70 rounded;
+.hotspot:active {
+  @apply scale-95;
 }
 
 .hotspot-found {
-  @apply ring-2 ring-judge-accent2 rounded;
+  @apply ring-2 ring-judge-accent2 rounded animate-ring-pulse;
 }
 
 .scrollbar-thin::-webkit-scrollbar {
@@ -30,4 +29,23 @@ body {
 .scrollbar-thin::-webkit-scrollbar-thumb {
   background: #333744;
   border-radius: 4px;
+}
+
+/* Buttons across the app get a tactile press instead of a hover reaction. */
+.press {
+  @apply transition-transform duration-100 active:scale-[0.97];
+}
+
+/* Route transition */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
 }

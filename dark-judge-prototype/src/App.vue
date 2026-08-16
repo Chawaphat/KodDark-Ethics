@@ -6,7 +6,11 @@ import NavBar from './components/NavBar.vue'
   <div class="min-h-full flex flex-col">
     <NavBar />
     <main class="flex-1">
-      <RouterView />
+      <RouterView v-slot="{ Component }">
+        <transition name="page" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </RouterView>
     </main>
     <footer class="border-t border-white/5 py-6 mt-10">
       <div class="max-w-6xl mx-auto px-5 text-xs text-slate-500 flex flex-wrap gap-x-4 gap-y-1">

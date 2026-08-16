@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import Icon from './Icon.vue'
 
 const props = defineProps({
   redesign: { type: Object, required: true },
@@ -24,7 +25,7 @@ function choose(option) {
       <button
         v-for="opt in redesign.options"
         :key="opt.id"
-        class="w-full text-left rounded-xl border p-4 transition"
+        class="press w-full text-left rounded-xl border p-4 transition-colors duration-300"
         :class="[
           chosenId
             ? opt.isEthical
@@ -32,18 +33,22 @@ function choose(option) {
               : opt.id === chosenId
                 ? 'border-judge-warn/60 bg-judge-warn/10'
                 : 'border-white/10 opacity-50'
-            : 'border-white/10 hover:border-judge-accent/60 hover:bg-white/5',
+            : 'border-white/10',
         ]"
         :disabled="!!chosenId"
         @click="choose(opt)"
       >
         <div class="flex items-start gap-3">
-          <span v-if="chosenId" class="text-lg leading-none mt-0.5">
-            {{ opt.isEthical ? '✅' : (opt.id === chosenId ? '⚠️' : '') }}
+          <span
+            v-if="chosenId && (opt.isEthical || opt.id === chosenId)"
+            class="mt-0.5 animate-pop-in"
+            :class="opt.isEthical ? 'text-judge-accent2' : 'text-judge-warn'"
+          >
+            <Icon :name="opt.isEthical ? 'check-square' : 'warning'" :size="18" />
           </span>
           <p class="text-sm text-slate-200">{{ opt.label }}</p>
         </div>
-        <p v-if="chosenId && (opt.id === chosenId || opt.isEthical)" class="text-xs text-slate-400 mt-2 pl-7">
+        <p v-if="chosenId && (opt.id === chosenId || opt.isEthical)" class="text-xs text-slate-400 mt-2 pl-7 animate-slide-down">
           {{ opt.feedback }}
         </p>
       </button>
